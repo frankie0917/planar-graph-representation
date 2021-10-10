@@ -215,28 +215,6 @@ export const Slide1 = () => {
     // log: true,
   });
 
-  const { content: v9Point } = useVertex({
-    ...vertexProps,
-
-    key: 'v9',
-    bg: 'rgb(177 225 172)',
-    variants: {
-      initial: {
-        xOff: -100,
-        yOff: -500,
-        radius: 500,
-        opacity: 0,
-      },
-      '3': {
-        opacity: 1,
-      },
-    },
-    style: {
-      zIndex: 0,
-    },
-    log: true,
-  });
-
   const e1 = useEdge({
     key: 'e1',
     a: v1,
@@ -312,7 +290,6 @@ export const Slide1 = () => {
       {v6Point}
       {v7Point}
       {v8Point}
-      {v9Point}
       {e1}
       {e2}
       {e3}
