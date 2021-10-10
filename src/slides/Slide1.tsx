@@ -5,24 +5,11 @@ import { useEdge } from '../components/useEdge';
 import { useVertex } from '../components/useVertex';
 import { Text } from '../components/Text';
 import { useHistory } from 'react-router-dom';
+import { useSlideControl } from '../hooks/useSlideControl';
 
 export const Slide1 = () => {
-  const [curStage, setCurStage] = useState(0);
+  const [curStage, setCurStage] = useSlideControl();
   const container = useRef(null);
-  const history = useHistory();
-  useEffect(() => {
-    document.body.onkeydown = (e) => {
-      if (e.code === 'Space') {
-        setCurStage((prev) => prev + 1);
-      }
-      const cur = Number(history.location.pathname.slice(1));
-      if (e.code === 'ArrowRight') {
-        history.push('/' + String(cur + 1));
-      } else if (e.code === 'ArrowLeft' && cur >= 1) {
-        history.push('/' + String(cur - 1));
-      }
-    };
-  }, []);
 
   const vertexProps = {
     initial: 'initial',
