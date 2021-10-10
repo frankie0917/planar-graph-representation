@@ -14,7 +14,7 @@ export const Slide2 = () => {
   return (
     <div style={{ position: 'relative' }} ref={container}>
       <AnimatePresence exitBeforeEnter>
-        <Text key="text-faces" hide xOff={50} yOff={-40}>
+        <Text key="text-faces" hide xOff={-700} y={200}>
           A graph is planar, if it has a planar embedding
         </Text>
       </AnimatePresence>
