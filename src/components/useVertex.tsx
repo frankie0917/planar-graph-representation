@@ -1,11 +1,84 @@
 import {
   HTMLMotionProps,
   motion,
+  MotionValue,
   useMotionValue,
   Variant,
 } from 'framer-motion';
 import { isUndefined } from 'lodash';
-import { PropsWithChildren, useEffect, useRef } from 'react';
+import {
+  forwardRef,
+  PropsWithChildren,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
+
+type DivWithVariant = HTMLMotionProps<'div'> & {
+  variants: {
+    initial: Variant & {
+      radius: number;
+      xOff?: number;
+      yOff?: number;
+    };
+    [key: string]: Variant & {
+      xOff?: number;
+      yOff?: number;
+    };
+  };
+};
+
+const VertexComponent = forwardRef<
+  HTMLDivElement,
+  PropsWithChildren<
+    {
+      key: string;
+      bg?: string;
+      w: MotionValue<number>;
+      x: MotionValue<number>;
+      y: MotionValue<number>;
+    } & DivWithVariant
+  >
+>(({ children, variants, w, bg, style, x, y, ...rest }, ref) => {
+  return (
+    <motion.div
+      ref={ref}
+      style={{
+        width: w,
+        height: w,
+        background: bg,
+        position: 'absolute',
+        borderRadius: '50%',
+        x,
+        y,
+        boxShadow: '0px 1px 2px 2px rgb(0 0 0 / 20%)',
+        zIndex: 10,
+        ...style,
+      }}
+      exit={{
+        opacity: 0,
+      }}
+      drag
+      variants={variants}
+      {...rest}
+    >
+      {children}
+    </motion.div>
+  );
+});
+
+type VertexProps = PropsWithChildren<
+  {
+    key: string;
+    x?: number;
+    y?: number;
+
+    h?: number | string;
+    bg?: string;
+    log?: boolean;
+  } & DivWithVariant
+>;
+
 export const useVertex = ({
   children,
   x: defaultX = window.bodyWidth / 2,
@@ -15,29 +88,7 @@ export const useVertex = ({
   variants,
   log,
   ...rest
-}: PropsWithChildren<
-  {
-    key: string;
-    x?: number;
-    y?: number;
-
-    h?: number | string;
-    bg?: string;
-    log?: boolean;
-  } & HTMLMotionProps<'div'> & {
-      variants: {
-        initial: Variant & {
-          radius: number;
-          xOff?: number;
-          yOff?: number;
-        };
-        [key: string]: Variant & {
-          xOff?: number;
-          yOff?: number;
-        };
-      };
-    }
->) => {
+}: VertexProps) => {
   const initVar = variants.initial;
   const hw = window.bodyWidth / 2;
   const hh = window.bodyHeight / 2;
@@ -93,31 +144,38 @@ export const useVertex = ({
 
   return {
     content: (
-      <motion.div
+      <VertexComponent
         ref={vertex}
-        style={{
-          width: w,
-          height: w,
-          background: bg,
-          position: 'absolute',
-          borderRadius: '50%',
-          x,
-          y,
-          boxShadow: '0px 1px 2px 2px rgb(0 0 0 / 20%)',
-          zIndex: 10,
-          ...style,
-        }}
-        exit={{
-          opacity: 0,
-        }}
-        drag
+        w={w}
+        x={x}
+        y={y}
+        bg={bg}
+        style={style}
         variants={variants}
         {...rest}
       >
         {children}
-      </motion.div>
+      </VertexComponent>
     ),
     point: { x, y },
     width: w,
   };
 };
+
+export const Vertex = forwardRef<
+  {
+    point: {
+      x: MotionValue<number>;
+      y: MotionValue<number>;
+    };
+    width: MotionValue<number>;
+  },
+  VertexProps
+>((props, ref) => {
+  const { content, point, width } = useVertex(props);
+  useImperativeHandle(ref, () => ({
+    point,
+    width,
+  }));
+  return content;
+});

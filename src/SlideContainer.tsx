@@ -4,8 +4,9 @@ import { Route, Switch, BrowserRouter, useHistory } from 'react-router-dom';
 import { Slide1 } from './slides/Slide1';
 import { Slide2 } from './slides/Slide2';
 import { Slide3 } from './slides/Slide3';
+import { Slide4 } from './slides/Slide4';
 
-const slides: (() => JSX.Element)[] = [Slide0, Slide1, Slide2, Slide3];
+const slides: (() => JSX.Element)[] = [Slide0, Slide1, Slide2, Slide3, Slide4];
 
 export const SlideContainer = () => {
   return (
