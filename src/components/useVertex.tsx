@@ -53,6 +53,10 @@ const VertexComponent = forwardRef<
         y,
         boxShadow: '0px 1px 2px 2px rgb(0 0 0 / 20%)',
         zIndex: 10,
+        display: 'flex',
+        fontSize: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
         ...style,
       }}
       exit={{
