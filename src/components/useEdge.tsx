@@ -104,3 +104,5 @@ export const useEdge = ({
     </motion.svg>
   );
 };
+
+export const Edge = useEdge;
