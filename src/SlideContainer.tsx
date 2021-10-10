@@ -1,22 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Slide0 } from './slides/Slide0';
-interface Slide {
-  content: () => JSX.Element;
-  bg?: string;
-}
+import { Route, Switch, BrowserRouter, useHistory } from 'react-router-dom';
+import { Slide1 } from './slides/Slide1';
 
-const slides: Record<number, Slide> = [
-  {
-    content: Slide0,
-  },
-];
+const slides: (() => JSX.Element)[] = [Slide0, Slide1];
 
 export const SlideContainer = () => {
-  const [curIndex, setCurIndex] = useState(0);
-  const { content, bg } = slides[curIndex];
   return (
-    <div className="SlideContainer" style={{ background: bg ?? '#FD886F' }}>
-      {content()}
+    <div className="SlideContainer" style={{ background: '#FD886F' }}>
+      <Switch>
+        {slides.map((content, i) => (
+          <Route key={i} component={content} exact path={'/' + String(i)} />
+        ))}
+        <Route component={slides[0]} path="/" />
+      </Switch>
     </div>
   );
 };

@@ -1,7 +1,12 @@
+import { BrowserRouter } from 'react-router-dom';
 import { SlideContainer } from './SlideContainer';
 
 function App() {
-  return <SlideContainer />;
+  return (
+    <BrowserRouter>
+      <SlideContainer />
+    </BrowserRouter>
+  );
 }
 
 export default App;

@@ -6,7 +6,6 @@ import {
 } from 'framer-motion';
 import { isUndefined } from 'lodash';
 import { PropsWithChildren, useEffect, useRef } from 'react';
-
 export const useVertex = ({
   children,
   x: defaultX = window.bodyWidth / 2,
@@ -27,12 +26,12 @@ export const useVertex = ({
     log?: boolean;
   } & HTMLMotionProps<'div'> & {
       variants: {
-        [key: string]: Variant & {
+        initial: Variant & {
+          radius: number;
           xOff?: number;
           yOff?: number;
         };
-        initial: Variant & {
-          radius: number;
+        [key: string]: Variant & {
           xOff?: number;
           yOff?: number;
         };
